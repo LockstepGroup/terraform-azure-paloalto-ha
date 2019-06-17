@@ -1,3 +1,4 @@
+// primary
 output "primary_pa_mgmt_ip_address" {
   value = "${module.primary_pa.mgmt_ip}"
 }
@@ -10,6 +11,17 @@ output "primary_pa_outside_ip_address" {
 output "primary_pa_outside_public_ip_address" {
   value = "${module.primary_pa.outside_pip}"
 }
-output "availability_set_id" {
-  value = "${module.shared_resources.availability_set_id}"
+
+// secondary
+output "secondary_pa_mgmt_ip_address" {
+  value = "${module.secondary_pa.mgmt_ip}"
+}
+output "secondary_pa_inside_ip_address" {
+  value = "${module.secondary_pa.inside_ip}"
+}
+output "secondary_pa_outside_ip_address" {
+  value = "${module.secondary_pa.outside_ip}"
+}
+output "secondary_pa_outside_public_ip_address" {
+  value = "${module.secondary_pa.outside_pip}"
 }
