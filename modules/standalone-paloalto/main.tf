@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "paloalto" {
 
 // storage account
 resource "azurerm_storage_account" "paloalto" {
-  name                      = "stor${var.hostname}}"
+  name                      = "stor${var.hostname}"
   resource_group_name       = "${azurerm_resource_group.paloalto.name}"
   location                  = "${var.location}"
   account_tier              = "Standard"
