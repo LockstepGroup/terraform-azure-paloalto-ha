@@ -34,7 +34,6 @@ variable "last_octet" {
   type        = number
   description = "Last octet to use for each Network Interface"
 }
-
 // vm selection
 variable "vm_size" {
   type        = "string"
@@ -60,4 +59,9 @@ variable "market_version" {
   type        = "string"
   description = "Marketplace version for Palo Alto firewalls"
   default     = "latest"
+}
+// availability_set_id
+variable "availability_set_id" {
+  type        = "string"
+  description = "Availability set id for NetScaler"
 }

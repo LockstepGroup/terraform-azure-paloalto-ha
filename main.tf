@@ -6,6 +6,15 @@ provider "azurerm" {
   tenant_id       = "${var.tenant_id}"
 }
 
+// create shared resources
+module "shared_resources" {
+  source = "./modules/shared-resources"
+
+  paloalto_hostname = "${var.primary_pa_hostname}"
+  location          = "${var.location}"
+  tags              = "${var.tags}"
+}
+
 // gather existing resource info (virtual network, subnets)
 module "existing_resources" {
   source = "./modules/existing-resources"
@@ -21,13 +30,14 @@ module "existing_resources" {
 module "primary_pa" {
   source = "./modules/standalone-paloalto"
 
-  location       = "${var.location}"
-  hostname       = "${var.primary_pa_hostname}"
-  tags           = "${var.tags}"
-  admin_username = "${var.admin_username}"
-  admin_password = "${var.admin_password}"
-  outside_subnet = "${module.existing_resources.outside_subnet}"
-  inside_subnet  = "${module.existing_resources.inside_subnet}"
-  mgmt_subnet    = "${module.existing_resources.mgmt_subnet}"
-  last_octet     = "${var.primary_pa_last_octet}"
+  location            = "${var.location}"
+  hostname            = "${var.primary_pa_hostname}"
+  tags                = "${var.tags}"
+  admin_username      = "${var.admin_username}"
+  admin_password      = "${var.admin_password}"
+  outside_subnet      = "${module.existing_resources.outside_subnet}"
+  inside_subnet       = "${module.existing_resources.inside_subnet}"
+  mgmt_subnet         = "${module.existing_resources.mgmt_subnet}"
+  last_octet          = "${var.primary_pa_last_octet}"
+  availability_set_id = "${module.shared_resources.availability_set_id}"
 }

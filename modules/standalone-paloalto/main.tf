@@ -135,4 +135,6 @@ resource "azurerm_virtual_machine" "paloalto" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
+
+  availability_set_id = "${var.availability_set_id}"
 }
