@@ -1,9 +1,9 @@
-output "mgmt_subnet_id" {
-  value = "${data.azurerm_subnet.mgmt.id}"
+output "mgmt_subnet" {
+  value = "${data.azurerm_subnet.mgmt}"
 }
-output "outside_subnet_id" {
-  value = "${data.azurerm_subnet.outside.id}"
+output "outside_subnet" {
+  value = "${data.azurerm_subnet.outside}"
 }
-output "inside_subnet_id" {
-  value = "${data.azurerm_subnet.inside.id}"
+output "inside_subnet" {
+  value = "${data.azurerm_subnet.inside}"
 }
