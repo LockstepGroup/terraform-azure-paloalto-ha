@@ -31,6 +31,8 @@ module "primary_pa" {
   source = "./modules/standalone-paloalto"
 
   location            = "${var.location}"
+  resource_group_name = "${module.shared_resources.resource_group_name}"
+  storage_account     = "${module.shared_resources.storage_account}"
   hostname            = "${var.primary_pa_hostname}"
   tags                = "${var.tags}"
   admin_username      = "${var.admin_username}"

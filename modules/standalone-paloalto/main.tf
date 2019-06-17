@@ -1,39 +1,17 @@
-// resource group
-resource "azurerm_resource_group" "paloalto" {
-  name     = "${join("", list("rg_", var.hostname))}"
-  location = "${var.location}"
-  tags     = "${var.tags}"
-}
-
-// storage account
-resource "azurerm_storage_account" "paloalto" {
-  name                      = "stor${var.hostname}"
-  resource_group_name       = "${azurerm_resource_group.paloalto.name}"
-  location                  = "${var.location}"
-  account_tier              = "Standard"
-  account_replication_type  = "LRS"
-  account_kind              = "StorageV2"
-  access_tier               = "Hot"
-  enable_https_traffic_only = "true"
-  tags                      = "${var.tags}"
-  depends_on                = ["azurerm_resource_group.paloalto"]
-}
-
 /*----------------- outside nic config ------------------ */
 // outside public ip
 resource "azurerm_public_ip" "outside" {
   name                = "${var.hostname}_pip_outside"
-  resource_group_name = "${azurerm_resource_group.paloalto.name}"
+  resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   allocation_method   = "Static"
   tags                = "${var.tags}"
-  depends_on          = ["azurerm_resource_group.paloalto"]
 }
 
 // outside nic
 resource "azurerm_network_interface" "outside" {
   name                 = "${var.hostname}_outside"
-  resource_group_name  = "${azurerm_resource_group.paloalto.name}"
+  resource_group_name  = "${var.resource_group_name}"
   location             = "${var.location}"
   depends_on           = ["azurerm_public_ip.outside"]
   enable_ip_forwarding = true
@@ -52,11 +30,10 @@ resource "azurerm_network_interface" "outside" {
 // inside nic
 resource "azurerm_network_interface" "inside" {
   name                 = "${var.hostname}_inside"
-  resource_group_name  = "${azurerm_resource_group.paloalto.name}"
+  resource_group_name  = "${var.resource_group_name}"
   location             = "${var.location}"
   enable_ip_forwarding = true
   tags                 = "${var.tags}"
-  depends_on           = ["azurerm_resource_group.paloalto"]
 
   ip_configuration {
     name                          = "${var.hostname}_ipc_inside"
@@ -73,11 +50,10 @@ resource "azurerm_network_interface" "inside" {
 // mgmt nic
 resource "azurerm_network_interface" "mgmt" {
   name                 = "${var.hostname}_mgmt"
-  resource_group_name  = "${azurerm_resource_group.paloalto.name}"
+  resource_group_name  = "${var.resource_group_name}"
   location             = "${var.location}"
   enable_ip_forwarding = true
   tags                 = "${var.tags}"
-  depends_on           = ["azurerm_resource_group.paloalto"]
 
   ip_configuration {
     name                          = "${var.hostname}_ipc_mgmt"
@@ -92,13 +68,12 @@ resource "azurerm_network_interface" "mgmt" {
 resource "azurerm_virtual_machine" "paloalto" {
   name                = "${var.hostname}"
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.paloalto.name}"
+  resource_group_name = "${var.resource_group_name}"
   vm_size             = "${var.vm_size}"
 
   depends_on = ["azurerm_network_interface.mgmt",
     "azurerm_network_interface.outside",
-    "azurerm_network_interface.inside",
-    "azurerm_storage_account.paloalto"
+    "azurerm_network_interface.inside"
   ]
   plan {
     name      = "${var.market_sku}"
@@ -115,7 +90,7 @@ resource "azurerm_virtual_machine" "paloalto" {
 
   storage_os_disk {
     name          = "${var.hostname}-osdisk"
-    vhd_uri       = "${azurerm_storage_account.paloalto.primary_blob_endpoint}vhds/${var.hostname}-${var.market_offer}-${var.market_sku}.vhd"
+    vhd_uri       = "${var.storage_account.primary_blob_endpoint}vhds/${var.hostname}-${var.market_offer}-${var.market_sku}.vhd"
     caching       = "ReadWrite"
     create_option = "FromImage"
   }
@@ -136,5 +111,5 @@ resource "azurerm_virtual_machine" "paloalto" {
     disable_password_authentication = false
   }
 
-  //availability_set_id = "${var.availability_set_id}"
+  availability_set_id = "${var.availability_set_id}"
 }
