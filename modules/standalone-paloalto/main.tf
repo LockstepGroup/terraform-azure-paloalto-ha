@@ -136,5 +136,5 @@ resource "azurerm_virtual_machine" "paloalto" {
     disable_password_authentication = false
   }
 
-  availability_set_id = "${var.availability_set_id}"
+  //availability_set_id = "${var.availability_set_id}"
 }
