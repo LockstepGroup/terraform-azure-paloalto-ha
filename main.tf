@@ -61,3 +61,16 @@ module "secondary_pa" {
   last_octet          = "${var.primary_pa_last_octet + 1}"
   availability_set_id = "${module.shared_resources.availability_set_id}"
 }
+
+module "external_azure_load_balancer" {
+  source = "./modules/external-azure-load-balancer"
+
+  location                 = "${var.location}"
+  resource_group_name      = "${module.shared_resources.resource_group_name}"
+  load_balancer_name       = "alb_${var.primary_pa_hostname}"
+  tags                     = "${var.tags}"
+  frontend_subnet          = "${module.existing_resources.outside_subnet}"
+  last_octet               = "${var.primary_pa_last_octet - 1}"
+  primary_pa_outside_nic   = "${module.primary_pa.outside_nic}"
+  secondary_pa_outside_nic = "${module.secondary_pa.outside_nic}"
+}
