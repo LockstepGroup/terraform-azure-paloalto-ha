@@ -62,15 +62,12 @@ module "secondary_pa" {
   availability_set_id = "${module.shared_resources.availability_set_id}"
 }
 
-module "external_azure_load_balancer" {
-  source = "./modules/external-azure-load-balancer"
+// function app
+module "ha_switcher" {
+  source = "./modules/function-app"
 
-  location                 = "${var.location}"
-  resource_group_name      = "${module.shared_resources.resource_group_name}"
-  load_balancer_name       = "alb_${var.primary_pa_hostname}"
-  tags                     = "${var.tags}"
-  frontend_subnet          = "${module.existing_resources.outside_subnet}"
-  last_octet               = "${var.primary_pa_last_octet - 1}"
-  primary_pa_outside_nic   = "${module.primary_pa.outside_nic}"
-  secondary_pa_outside_nic = "${module.secondary_pa.outside_nic}"
+  function_name       = "${var.primary_pa_hostname}-ha-switcher"
+  resource_group_name = "${module.shared_resources.resource_group_name}"
+  storage_account     = "${module.shared_resources.storage_account}"
+  location            = "${var.location}"
 }
