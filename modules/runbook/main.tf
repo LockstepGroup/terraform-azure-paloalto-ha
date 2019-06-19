@@ -29,11 +29,50 @@ resource "azurerm_automation_runbook" "ha_switcher" {
   content = "${data.local_file.ha_switcher.content}"
 }
 
-resource "azurerm_automation_credential" "example" {
-  name                = "pa_sp_display_name"
+resource "azurerm_automation_credential" "service_principal" {
+  name                = "${var.pa_sp_display_name}"
   resource_group_name = "${var.resource_group_name}"
   account_name        = "${azurerm_automation_account.ha_switcher.name}"
-  username            = "pa_sp_client_id"
-  password            = "pa_sp_client_secret"
+  username            = "${var.pa_sp_client_id}"
+  password            = "${var.pa_sp_client_secret}"
   description         = "Credential used to move IP Configurations between Palo Altos"
+}
+
+resource "azurerm_automation_credential" "pa_admin" {
+  name                = "Palo Alto firewall admin account"
+  resource_group_name = "${var.resource_group_name}"
+  account_name        = "${azurerm_automation_account.ha_switcher.name}"
+  username            = "${var.pa_admin_username}"
+  password            = "${var.pa_admin_password}"
+  description         = "Credential used to move IP Configurations between Palo Altos"
+}
+
+// primary pa variables
+resource "azurerm_automation_variable_string" "PrimaryFirewallHostname" {
+  name                    = "PrimaryFirewallHostname"
+  resource_group_name     = "${var.resource_group_name}"
+  automation_account_name = "${azurerm_automation_account.ha_switcher.name}"
+  value                   = "${var.primary_pa_mgmt_ipaddress}"
+}
+
+resource "azurerm_automation_variable_string" "PrimaryFirewallResourceGroupName" {
+  name                    = "PrimaryFirewallResourceGroupName"
+  resource_group_name     = "${var.resource_group_name}"
+  automation_account_name = "${azurerm_automation_account.ha_switcher.name}"
+  value                   = "${var.resource_group_name}"
+}
+
+// secondary pa variables
+resource "azurerm_automation_variable_string" "SecondaryFirewallHostname" {
+  name                    = "SecondaryFirewallHostname"
+  resource_group_name     = "${var.resource_group_name}"
+  automation_account_name = "${azurerm_automation_account.ha_switcher.name}"
+  value                   = "${var.secondary_pa_mgmt_ipaddress}"
+}
+
+resource "azurerm_automation_variable_string" "SecondaryFirewallResourceGroupName" {
+  name                    = "SecondaryFirewallResourceGroupName"
+  resource_group_name     = "${var.resource_group_name}"
+  automation_account_name = "${azurerm_automation_account.ha_switcher.name}"
+  value                   = "${var.resource_group_name}"
 }

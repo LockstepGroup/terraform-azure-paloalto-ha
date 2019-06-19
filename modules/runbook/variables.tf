@@ -24,3 +24,20 @@ variable "pa_sp_client_secret" {
   type        = string
   description = "Client Secret for Service Principal to move IP Configurations"
 }
+// variables
+variable "primary_pa_mgmt_ipaddress" {
+  type        = string
+  description = "IP Address or Hostname of Management interface for Primary Palo Alto"
+}
+variable "secondary_pa_mgmt_ipaddress" {
+  type        = string
+  description = "IP Address or Hostname of Management interface for Secondary Palo Alto"
+}
+variable "pa_admin_username" {
+  type        = string
+  description = "Palo Alto admin username"
+}
+variable "pa_admin_password" {
+  type        = string
+  description = "Palo Alto admin password"
+}

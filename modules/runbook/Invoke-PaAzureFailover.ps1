@@ -47,11 +47,13 @@ Write-Output -InputObject "HA NVA timer trigger function executed at:$(Get-Date)
 #region FirewallConnectionVariables
 #--------------------------------------------------------------------------
 
-$PrimaryFirewallHostname = $env:PrimaryFirewallHostname      # Set the Name of the primary NVA firewall
-$PrimaryFirewallResourceGroupName = $env:PrimaryFirewallResourceGroupName     # Set the ResourceGroup that contains FW1
+$PrimaryFirewallHostname = $env:PrimaryFirewallHostname
+$PrimaryFirewallResourceGroupName = $env:PrimaryFirewallResourceGroupName
+$PrimaryFirewallApiKey = $env:PrimaryFirewallApiKey
 
-$SecondaryFirewallHostname = $env:SecondaryFirewallHostname      # Set the Name of the secondary NVA firewall
-$SecondaryFirewallResourceGroupName = $env:SecondaryFirewallResourceGroupName     # Set the ResourceGroup that contains FW2
+$SecondaryFirewallHostname = $env:SecondaryFirewallHostname
+$SecondaryFirewallResourceGroupName = $env:SecondaryFirewallResourceGroupName
+$SecondaryFirewallApiKey = $env:SecondaryFirewallApiKey
 
 #--------------------------------------------------------------------------
 #endregion FirewallConnectionVariables

@@ -74,4 +74,10 @@ module "ha_switcher" {
   pa_sp_display_name  = "${var.pa_sp_display_name}"
   pa_sp_client_id     = "${var.pa_sp_client_id}"
   pa_sp_client_secret = "${var.pa_sp_client_secret}"
+
+  // variables
+  primary_pa_mgmt_ipaddress   = "${module.primary_pa.mgmt_ip}"
+  secondary_pa_mgmt_ipaddress = "${module.secondary_pa.mgmt_ip}"
+  pa_admin_username           = "${var.admin_username}"
+  pa_admin_password           = "${var.admin_password}"
 }
