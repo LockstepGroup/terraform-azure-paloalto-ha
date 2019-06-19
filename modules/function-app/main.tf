@@ -5,8 +5,8 @@ resource "azurerm_app_service_plan" "ha" {
   kind                = "FunctionApp"
 
   sku {
-    tier = "Dynamic"
-    size = "Y1"
+    tier = "Premium"
+    size = "B1"
   }
 }
 
