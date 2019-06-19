@@ -28,3 +28,12 @@ resource "azurerm_automation_runbook" "ha_switcher" {
 
   content = "${data.local_file.ha_switcher.content}"
 }
+
+resource "azurerm_automation_credential" "example" {
+  name                = "pa_sp_display_name"
+  resource_group_name = "${var.resource_group_name}"
+  account_name        = "${azurerm_automation_account.ha_switcher.name}"
+  username            = "pa_sp_client_id"
+  password            = "pa_sp_client_secret"
+  description         = "Credential used to move IP Configurations between Palo Altos"
+}

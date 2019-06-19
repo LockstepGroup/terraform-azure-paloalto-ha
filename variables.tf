@@ -70,3 +70,17 @@ variable "primary_pa_last_octet" {
   type        = number
   description = "Last octet to use for each Network Interface"
 }
+/* ------------------------------------ modules/runbook ------------------------------------ */
+// service principal
+variable "pa_sp_display_name" {
+  type        = string
+  description = "Display Name for Service Principal to move IP Configurations"
+}
+variable "pa_sp_client_id" {
+  type        = string
+  description = "Client ID for Service Principal to move IP Configurations"
+}
+variable "pa_sp_client_secret" {
+  type        = string
+  description = "Client Secret for Service Principal to move IP Configurations"
+}

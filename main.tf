@@ -69,4 +69,9 @@ module "ha_switcher" {
   automation_account_name = "${var.primary_pa_hostname}"
   resource_group_name     = "${module.shared_resources.resource_group_name}"
   location                = "${var.location}"
+
+  // service principal
+  pa_sp_display_name  = "${var.pa_sp_display_name}"
+  pa_sp_client_id     = "${var.pa_sp_client_id}"
+  pa_sp_client_secret = "${var.pa_sp_client_secret}"
 }
