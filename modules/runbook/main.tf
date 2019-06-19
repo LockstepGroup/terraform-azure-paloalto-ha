@@ -1,4 +1,4 @@
-resource "azurerm_automation_account" "example" {
+resource "azurerm_automation_account" "ha_switcher" {
   name                = "${var.automation_account_name}"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
@@ -8,24 +8,23 @@ resource "azurerm_automation_account" "example" {
   }
 }
 
-/*
-resource "azurerm_app_service_plan" "ha" {
-  name                = "${var.function_name}"
+data "local_file" "ha_switcher" {
+  filename = "${path.module}/Invoke-PaAzureFailover.ps1"
+}
+
+resource "azurerm_automation_runbook" "ha_switcher" {
+  name                = "Invoke-PaAzureFailover"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
-  kind                = "FunctionApp"
+  account_name        = "${azurerm_automation_account.ha_switcher.name}"
+  log_verbose         = "true"
+  log_progress        = "true"
+  description         = "Moves secondary IP Configurations between Palo Alto firewalls in the event of failover."
+  runbook_type        = "PowerShell"
 
-  sku {
-    tier = "Premium"
-    size = "B1"
+  publish_content_link {
+    uri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1"
   }
-}
 
-resource "azurerm_function_app" "ha" {
-  name                      = "${var.function_name}"
-  location                  = "${var.location}"
-  resource_group_name       = "${var.resource_group_name}"
-  app_service_plan_id       = "${azurerm_app_service_plan.ha.id}"
-  storage_connection_string = "${var.storage_account.primary_connection_string}"
+  content = "${data.local_file.ha_switcher.content}"
 }
- */

@@ -62,7 +62,7 @@ module "secondary_pa" {
   availability_set_id = "${module.shared_resources.availability_set_id}"
 }
 
-// function app
+// runbook
 module "ha_switcher" {
   source = "./modules/runbook"
 
