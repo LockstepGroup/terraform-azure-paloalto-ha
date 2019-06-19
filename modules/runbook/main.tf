@@ -1,3 +1,14 @@
+resource "azurerm_automation_account" "example" {
+  name                = "${var.automation_account_name}"
+  location            = "${var.location}"
+  resource_group_name = "${var.resource_group_name}"
+
+  sku {
+    name = "Basic"
+  }
+}
+
+/*
 resource "azurerm_app_service_plan" "ha" {
   name                = "${var.function_name}"
   location            = "${var.location}"
@@ -17,3 +28,4 @@ resource "azurerm_function_app" "ha" {
   app_service_plan_id       = "${azurerm_app_service_plan.ha.id}"
   storage_connection_string = "${var.storage_account.primary_connection_string}"
 }
+ */

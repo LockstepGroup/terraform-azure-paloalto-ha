@@ -66,8 +66,7 @@ module "secondary_pa" {
 module "ha_switcher" {
   source = "./modules/function-app"
 
-  function_name       = "${var.primary_pa_hostname}-ha-switcher"
-  resource_group_name = "${module.shared_resources.resource_group_name}"
-  storage_account     = "${module.shared_resources.storage_account}"
-  location            = "${var.location}"
+  automation_account_name = "${var.primary_pa_hostname}"
+  resource_group_name     = "${module.shared_resources.resource_group_name}"
+  location                = "${var.location}"
 }
