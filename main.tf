@@ -64,7 +64,7 @@ module "secondary_pa" {
 
 // function app
 module "ha_switcher" {
-  source = "./modules/function-app"
+  source = "./modules/runbook"
 
   automation_account_name = "${var.primary_pa_hostname}"
   resource_group_name     = "${module.shared_resources.resource_group_name}"
